@@ -3,13 +3,14 @@
 import random, argparse, sys, os, commands, time
 
 #1.封装mysqlbinlog远程备份操作
-#2.支持断开尝试重新链接操作
-#3.在备份目录随机生成一个server_id
-#4.如果备份目录已经有文件了，就不需要从头开始获取binlog了
-#5.支持读取配置文件
-#6.mysqlbinlog获取事件后，并不会实时落盘，而是先保存在本地服务器的内存中，每4K刷盘一次
-#python binlog_server.py --host=192.168.11.128 --user=yancg --password=123456 --port=3310 &
-
+#参数：
+#file-path：指定备份目录，不指定则备份在当前执行脚本的目录
+#server-id：用户复制的server_id，不知道则自动生成/tmp/binlog.log
+#log-file：指定日志输出文件，不指定默认在
+#最简单的例子
+#python binlog_backup.py --host=192.168.11.128 --user=yancg --password=123456 --port=3310 &
+#下面是建议的备份命令
+#python binlog_backup.py --host=192.168.11.128 --user=yancg --password=123456 --port=3310 --file-path=/data/binlog_backup/ &
 
 path = "/opt/mysql-5.7/bin/"
 mysql = path + "mysql -h{0} -u{1} -p\'{2}\' -P{3} -e\"{4}\" | head -n2 | tail -n 1 | awk \'{5}\'"
@@ -35,7 +36,7 @@ def check_arguments():
     else:
         read_conf_file(args)
     if(not args.server_id or args.server_id <= 0):
-        args.server_id = random.randint(88888,99999)
+        args.server_id = random.randint(777777,999999)
     if(len(args.file_path) <= 0):
         args.file_path = os.getcwd() + "/"
     return args
