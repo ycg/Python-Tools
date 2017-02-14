@@ -1,0 +1,7 @@
+remark = group1_master
+server_id = 0
+host = 192.168.11.128
+port = 3306
+user = yancg
+password = 123456
+file_path = /data/binlog/

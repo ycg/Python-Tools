@@ -4,6 +4,8 @@ import MySQLdb
 import ConfigParser
 import time, threading
 import collections, paramiko, threadpool
+from multiprocessing import Pool
+from multiprocessing.dummy import Pool as ThreadPool
 from MySQLdb.cursors import DictCursor
 from DBUtils.PooledDB import PooledDB
 
@@ -19,6 +21,8 @@ time_interval = 2
 connection_pools = {}
 host_ssh_client  = {}
 thread_pool = threadpool.ThreadPool(100)
+#new_pool = ThreadPool(80)
+#new_thread_pool = ThreadPool(80)
 host_infos = collections.OrderedDict()
 linux_infos = collections.OrderedDict()
 mysql_status_infos = collections.OrderedDict()
@@ -485,12 +489,17 @@ def getMySQLConnection(host_info):
 
 '''把操作装进线程池'''
 def join_thread_pool(method_name):
-    requests = []
-    for host_info in host_infos.values():
-        requests.extend(threadpool.makeRequests(method_name, [host_info], None))
+    #requests = []
+    #for host_info in host_infos.values():
+        #requests.extend(threadpool.makeRequests(method_name, [host_info], None))
+    requests = threadpool.makeRequests(method_name, list(host_infos.values()), None)
     for request in requests:
         thread_pool.putRequest(request)
     thread_pool.poll()
+
+    #new_pool = ThreadPool(80)
+    #new_pool.map_async(method_name, list(host_infos.values()))
+    #new_thread_pool.map_async(method_name, list(host_infos.values()))
 
 '''监控MySQL状态的线程类'''
 class ThreadMySQLStatus(threading.Thread):
@@ -681,6 +690,12 @@ def print_single_host_info(print_title_string, print_string):
         print(print_string)
     print_count = print_count + 1
 
+def monitor():
+    join_thread_pool(monitor_mysql_status)
+    join_thread_pool(monitor_innodb_status)
+    join_thread_pool(monitor_host_status)
+    join_thread_pool(monitor_replication)
+
 print("<<<<<<<<<<<<<<<监控模式如下：>>>>>>>>>>>>>>>>>")
 print("M-多台监控")
 print("S-单台监控")
@@ -697,6 +712,7 @@ ThreadInnodbStatus().start()
 ThreadMonitorInput().start()
 ThreadLinuxHostStatus().start()
 ThreadMySQLReplication().start()
+#monitor()
 time.sleep(3)
 
 id = 0;
@@ -722,7 +738,7 @@ while(id < 300):
                 print_innodb_infos(host_key)
             elif (current_monitor_type == monitor_host):
                 print_linux_host_infos(host_key)
+    #monitor()
     time.sleep(time_interval)
-
 
 print("<<<<<<<<<<<<<<<<<<监控结束>>>>>>>>>>>>>>>>>>")
