@@ -3,10 +3,10 @@
 import random, argparse, sys, os, commands, time
 
 #1.封装mysqlbinlog远程备份操作
-#参数：
+#参数如下：
 #file-path：指定备份目录，不指定则备份在当前执行脚本的目录
-#server-id：用户复制的server_id，不知道则自动生成/tmp/binlog.log
-#log-file：指定日志输出文件，不指定默认在
+#server-id：用户复制的server_id，不指定则自动生成
+#log-file：指定日志输出文件，不指定默认在/tmp/binlog.log
 #最简单的例子
 #python binlog_backup.py --host=192.168.11.128 --user=yancg --password=123456 --port=3310 &
 #下面是建议的备份命令
