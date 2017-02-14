@@ -1,7 +1,5 @@
+import sys
 
 
 
-a = "1111111111"
-
-for i in a:
-    print(i)
+print(sys.argv[0],sys.argv[1])
