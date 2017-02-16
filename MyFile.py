@@ -1,18 +1,31 @@
 
+import MySQLdb
+import MySQLdb.converters
+import paramiko
 
-aa = True
-
-if aa is True:
-    print("aaaaaaaaaaaaaaa")
-
-
-file = open("C:\\Users\\Administrator\\Desktop\\table.txt")
-
-while 1:
-    line = file.readline()
-    if not line:
-        break
-    pass
+host_client = paramiko.SSHClient()
+host_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+host_client.connect("10.47.92.98", port=22, username="root")
 
 
-file.close()
+'''
+conn = None
+cursor = None
+try:
+    conn = MySQLdb.connect(host="192.168.11.128", port=3310, user="yancg", passwd="123456")
+    #cursor = conn.cursor()
+    cursor = conn.cursor(cursorclass = MySQLdb.cursors.DictCursor)
+    cursor.execute("select count(1) as count from information_schema.INNODB_TRX union all select count(1) as count from information_schema.INNODB_LOCK_WAITS;");
+    #print(cursor.fetchone())
+    for row in cursor.fetchall():
+        print(row)
+    print("----------------------------")
+    cursor.execute("show slave status;");
+    for row in cursor.fetchall():
+        print(row)
+finally:
+    if(cursor != None):
+        cursor.close()
+    if (conn != None):
+        conn.close()
+'''
