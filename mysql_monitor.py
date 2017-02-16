@@ -294,10 +294,11 @@ def change_byte_to_g(value):
     return int(value.replace("kB", "")) / 1024 / 1024
 
 #T_S = Threads | T_Run = Thread_running | T_C_H = Thread_Cache_Hit | B_C_H = Binlog_Cache_Hit
+#C_Per = Connections Persecond | C_U_R = Connections Usage Rate
 mysql_status_string_format = "%-15s%-7s%-5s%-5s%-5s%-7s%-7s%-8s%-6s" \
-                             "%-6s%-7s%-7s%-7s%-7s%-7s%-5s%-5s"
+                             "%-6s%-7s%-7s%-7s%-7s%-7s%-5s%-5s%-7s%-7s"
 mysql_status_print_title_string = mysql_status_string_format % ("Name", "Select", "Ins", "Upd", "Del", "QPS", "TPS", "Commit", "Roll",
-                                                                "T_S", "T_Run", "T_C_H", "B_C_H", "Rec", "Send", "CTT", "CTDT")
+                                                                "T_S", "T_Run", "T_C_H", "B_C_H", "Rec", "Send", "CTT", "CTDT", "C_Per", "C_U_R")
 
 '''监测mysql状态
 def monitor_mysql_status(host_info):
@@ -614,7 +615,7 @@ def print_status_info_by_host_key(host_key):
                                          status_info.rollback, status_info.threads_count, status_info.threads_run_count,
                                          status_info.thread_cache_hit, status_info.binlog_cache_hit,
                                          status_info.receive_bytes, status_info.send_bytes, status_info.create_tmp_table_count,
-                                         status_info.create_tmp_disk_table_count)
+                                         status_info.create_tmp_disk_table_count, status_info.connections_per, status_info.connections_usage_rate)
 
 '''打印mysql复制信息'''
 def print_repl_infos(host_key):
@@ -692,6 +693,7 @@ def monitor_mysql_new(host_info):
     mysql_status_old = get_mysql_status(cursor)
     time.sleep(1)
     mysql_status_new = get_mysql_status(cursor)
+    mysql_variables = get_mysql_variables(cursor)
 
     #1.获取mysql global status
     status_info = mysql_status_infos[host_info.key]
@@ -713,12 +715,14 @@ def monitor_mysql_new(host_info):
     status_info.delete_count = int(mysql_status_new["Com_delete"]) - int(mysql_status_old["Com_delete"])
     status_info.commit = int(mysql_status_new["Com_commit"]) - int(mysql_status_old["Com_commit"])
     status_info.rollback = int(mysql_status_new["Com_rollback"]) - int(mysql_status_old["Com_rollback"])
+    status_info.connections_per = int(mysql_status_new["Connections"]) - int(mysql_status_old["Connections"])
     status_info.create_tmp_files = int(mysql_status_new["Created_tmp_files"]) - int(mysql_status_old["Created_tmp_files"])
     status_info.create_tmp_table_count = int(mysql_status_new["Created_tmp_tables"]) - int(mysql_status_old["Created_tmp_tables"])
     status_info.create_tmp_disk_table_count = int(mysql_status_new["Created_tmp_disk_tables"]) - int(mysql_status_old["Created_tmp_disk_tables"])
     status_info.thread_cache_hit = (1 - status_info.thread_created / status_info.connections) * 100
-    status_info.send_bytes = str((int(mysql_status_new["Bytes_sent"]) - int(mysql_status_old["Bytes_sent"])) / 1024) + "K"
-    status_info.receive_bytes = str((int(mysql_status_new["Bytes_received"])  - int(mysql_status_old["Bytes_received"])) / 1024) + "K"
+    status_info.connections_usage_rate = status_info.threads_count * 100 / int(mysql_variables["max_connections"])
+    status_info.send_bytes = get_data_length(int(mysql_status_new["Bytes_sent"]) - int(mysql_status_old["Bytes_sent"]))
+    status_info.receive_bytes = get_data_length(int(mysql_status_new["Bytes_received"])  - int(mysql_status_old["Bytes_received"]))
     status_info.tps = (int(mysql_status_new["Com_commit"]) + int(mysql_status_new["Com_rollback"])) - (int(mysql_status_old["Com_commit"]) + int(mysql_status_old["Com_rollback"]))
     if(status_info.binlog_cache_use > 0):
         #从库没有写binlog，所以这边要判断下
@@ -729,8 +733,6 @@ def monitor_mysql_new(host_info):
     innodb_info.trxs = 0
     innodb_info.current_row_locks = 0
     innodb_info.history_list_length = 0
-    #mysql和percona不一样
-    #innodb_info.current_row_locks = int(mysql_status_new['Innodb_current_row_locks'])
     innodb_info.buffer_pool_reads = int(mysql_status_new["Innodb_buffer_pool_reads"])
     innodb_info.buffer_pool_read_requests = int(mysql_status_new["Innodb_buffer_pool_read_requests"])
     innodb_info.rows_read = int(mysql_status_new["Innodb_rows_read"]) - int(mysql_status_old["Innodb_rows_read"])
@@ -744,6 +746,15 @@ def monitor_mysql_new(host_info):
     innodb_info.commit = int(mysql_status_new["Com_commit"]) - int(mysql_status_old["Com_commit"])
     innodb_info.rollback = int(mysql_status_new["Com_rollback"]) - int(mysql_status_old["Com_rollback"])
     innodb_info.buffer_pool_hit = (1 - innodb_info.buffer_pool_reads / innodb_info.buffer_pool_read_requests) * 100
+    if(mysql_status_new.get("Innodb_history_list_length") != None):
+        #percona
+        innodb_info.history_list_length = int(mysql_status_new["Innodb_history_list_length"])
+    if(mysql_status_new.get("Innodb_current_row_locks") != None):
+        #percona
+        innodb_info.current_row_locks = mysql_status_new["Innodb_current_row_locks"]
+    elif(mysql_status_new.get("Innodb_row_lock_current_waits") != None):
+        #mysql
+        innodb_info.current_row_locks = mysql_status_new["Innodb_row_lock_current_waits"]
 
     #3.获取replcation status
     if (host_info.is_slave > 0):
@@ -763,9 +774,27 @@ def monitor_mysql_new(host_info):
     cursor.close()
     connection.close
 
+def get_data_length(data_length):
+    value = float(1024)
+    if(data_length > value):
+        result = round(data_length / value, 0)
+        if(result > value):
+            return str(int(round(result / value, 0))) + "M"
+        else:
+            return str(int(result)) + "K"
+    else:
+        return str(data_length) + "KB"
+
 def get_mysql_status(cursor):
     data = {}
     cursor.execute("show global status;")
+    for row in cursor.fetchall():
+        data[row.get("Variable_name")] = row.get("Value")
+    return data
+
+def get_mysql_variables(cursor):
+    data = {}
+    cursor.execute("show global variables;")
     for row in cursor.fetchall():
         data[row.get("Variable_name")] = row.get("Value")
     return data
@@ -793,7 +822,7 @@ ThreadMonitorInput().start()
 #ThreadMySQLReplication().start()
 
 id = 0;
-while(id < 300):
+while(id < 3000):
     time.sleep(time_interval)
     id = id + 1
     if(change_mode == 0):
