@@ -443,7 +443,7 @@ def executeToList(sql, host_info):
         commit_and_close(cursor, conn)
     return None
 
-'''返回一行数据转换成字典对象'''
+'''返回一行数据转换成字典对象
 def executeOneToDic(sql, host_info):
     conn = None
     cursor = None
@@ -454,7 +454,7 @@ def executeOneToDic(sql, host_info):
         return cursor.fetchone()
     finally:
         commit_and_close(cursor, conn)
-    return None
+    return None'''
 
 '''执行Show Status返回字典对象'''
 def executeToShowStatus(sql, host_info):
