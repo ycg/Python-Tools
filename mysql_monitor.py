@@ -15,6 +15,7 @@ monitor_repl = "A"
 monitor_status = "B"
 monitor_innodb = "C"
 monitor_host = "D"
+monitor_handler = "E"
 
 print_count = 0
 time_interval = 3
@@ -34,6 +35,7 @@ monitor_types[monitor_repl] = "Monitor Replication"
 monitor_types[monitor_status] = "Monitor MySQL Status"
 monitor_types[monitor_innodb] = "Monitor MySQL Innodb"
 monitor_types[monitor_host] = "Monitor MySQL Host"
+monitor_types[monitor_handler] = "Monitor MySQL Handler"
 
 change_mode = 0
 current_mode = "M"
@@ -295,9 +297,9 @@ def change_byte_to_g(value):
 
 #T_S = Threads | T_Run = Thread_running | T_C_H = Thread_Cache_Hit | B_C_H = Binlog_Cache_Hit
 #C_Per = Connections Persecond | C_U_R = Connections Usage Rate
-mysql_status_string_format = "%-15s%-7s%-5s%-5s%-5s%-7s%-7s%-8s%-6s" \
+mysql_status_string_format = "%-15s%-6s%-5s%-5s%-5s%-7s%-6s%-6s%-6s" \
                              "%-6s%-7s%-7s%-7s%-7s%-7s%-5s%-5s%-7s%-7s"
-mysql_status_print_title_string = mysql_status_string_format % ("Name", "Select", "Ins", "Upd", "Del", "QPS", "TPS", "Commit", "Roll",
+mysql_status_print_title_string = mysql_status_string_format % ("Name", "Sele", "Ins", "Upd", "Del", "QPS", "TPS", "Comm", "Roll",
                                                                 "T_S", "T_Run", "T_C_H", "B_C_H", "Rec", "Send", "CTT", "CTDT", "C_Per", "C_U_R")
 
 '''监测mysql状态
@@ -675,6 +677,29 @@ def print_innodb_info_by_host_key(host_key):
     return mysql_innodb_string_format % (host_info.remark, innodb_info.rows_read, innodb_info.rows_inserted, innodb_info.rows_updated,
                                          innodb_info.rows_deleted, innodb_info.history_list_length, innodb_info.buffer_pool_hit, innodb_info.trxs, innodb_info.current_row_locks,
                                          innodb_info.page_dirty_count, innodb_info.page_free_count, innodb_info.page_total_count, innodb_info.page_flush_persecond)
+mysql_handler_read_and_innodb_log_format = "%-15s%-9s%-9s%-9s%-9s%-9s%-11s%-6s%-7s%-9s%-9s%-8s"
+mysql_handler_read_and_innodb_log_title_string = mysql_handler_read_and_innodb_log_format % ("Name", "read_k", "read_n",
+                                                                                             "read_f", "read_l", "read_rnd", "read_rnd_n",
+                                                                                             "l_wr", "l_wait", "os_l_pf", "os_l_pw", "os_l_w")
+
+'''打印handler和innodb log数据'''
+def print_handler_read_and_innodb_log(host_key):
+    if(host_key == None):
+        print("\n")
+        print(mysql_handler_read_and_innodb_log_title_string)
+        for key, host_info in host_infos.items():
+            print(print_handler_read_and_innodb_log_by_host_key(key))
+    else:
+        print_single_host_info(mysql_handler_read_and_innodb_log_title_string, print_handler_read_and_innodb_log_by_host_key(host_key))
+
+def print_handler_read_and_innodb_log_by_host_key(host_key):
+    host_info = host_infos[host_key]
+    innodb_info = mysql_innodb_infos[host_key]
+    status_info = mysql_status_infos[host_key]
+    return mysql_handler_read_and_innodb_log_format % (host_info.remark, status_info.handler_read_key, status_info.handler_read_next, status_info.handler_read_first, status_info.handler_read_last,
+                                                       status_info.handler_read_rnd, status_info.handler_read_rnd_next,
+                                                       innodb_info.innodb_log_writes, innodb_info.innodb_log_waits, innodb_info.innodb_os_log_pending_fsyncs,
+                                                       innodb_info.innodb_os_log_pending_writes, innodb_info.innodb_os_log_written)
 
 def print_single_host_info(print_title_string, print_string):
     global print_count
@@ -695,7 +720,7 @@ def monitor_mysql_new(host_info):
     mysql_status_new = get_mysql_status(cursor)
     mysql_variables = get_mysql_variables(cursor)
 
-    #1.获取mysql global status
+    #1.---------------------------------------------------------获取mysql global status--------------------------------------------------------
     status_info = mysql_status_infos[host_info.key]
     status_info.binlog_cache_hit = 0
     status_info.connections = int(mysql_status_new["Connections"])
@@ -727,8 +752,15 @@ def monitor_mysql_new(host_info):
     if(status_info.binlog_cache_use > 0):
         #从库没有写binlog，所以这边要判断下
         status_info.binlog_cache_hit = (1 - status_info.binlog_cache_disk_use / status_info.binlog_cache_use) * 100
+    #Handler_read
+    status_info.handler_read_first = int(mysql_status_new["Handler_read_first"]) - int(mysql_status_old["Handler_read_first"])
+    status_info.handler_read_key = int(mysql_status_new["Handler_read_key"]) - int(mysql_status_old["Handler_read_key"])
+    status_info.handler_read_next = int(mysql_status_new["Handler_read_next"]) - int(mysql_status_old["Handler_read_next"])
+    status_info.handler_read_last = int(mysql_status_new["Handler_read_last"]) - int(mysql_status_old["Handler_read_last"])
+    status_info.handler_read_rnd = int(mysql_status_new["Handler_read_rnd"]) - int(mysql_status_old["Handler_read_rnd"])
+    status_info.handler_read_rnd_next = int(mysql_status_new["Handler_read_rnd_next"]) - int(mysql_status_old["Handler_read_rnd_next"])
 
-    #2.获取innodb的相关数据
+    #2.---------------------------------------------------------获取innodb的相关数据-------------------------------------------------------------------
     innodb_info = mysql_innodb_infos[host_info.key]
     innodb_info.trxs = 0
     innodb_info.current_row_locks = 0
@@ -755,8 +787,14 @@ def monitor_mysql_new(host_info):
     elif(mysql_status_new.get("Innodb_row_lock_current_waits") != None):
         #mysql
         innodb_info.current_row_locks = mysql_status_new["Innodb_row_lock_current_waits"]
+    #innodb log info
+    innodb_info.innodb_log_writes = int(mysql_status_new["Innodb_log_writes"]) - int(mysql_status_old["Innodb_log_writes"])
+    innodb_info.innodb_log_waits = int(mysql_status_new["Innodb_log_waits"])
+    innodb_info.innodb_os_log_pending_fsyncs = int(mysql_status_new["Innodb_os_log_pending_fsyncs"])
+    innodb_info.innodb_os_log_pending_writes = int(mysql_status_new["Innodb_os_log_pending_writes"])
+    innodb_info.innodb_os_log_written = int(mysql_status_new["Innodb_os_log_written"]) - int(mysql_status_old["Innodb_os_log_written"])
 
-    #3.获取replcation status
+    #3.-----------------------------------------------------获取replcation status-------------------------------------------------------------------
     if (host_info.is_slave > 0):
         result = fetchone(cursor, "show slave status;")
         repl_info = mysql_replication_infos[host_info.key]
@@ -835,6 +873,8 @@ while(id < 3000):
                   print_innodb_infos(None)
               elif(current_monitor_type == monitor_host):
                   print_linux_host_infos(None)
+              elif(current_monitor_type == monitor_handler):
+                  print_handler_read_and_innodb_log(None)
         elif(current_mode == single_monitor_mode):
             host_key = single_monitor_host_id_and_key.get(current_host_id).host_key
             if (current_monitor_type == monitor_repl):
@@ -845,6 +885,8 @@ while(id < 3000):
                 print_innodb_infos(host_key)
             elif (current_monitor_type == monitor_host):
                 print_linux_host_infos(host_key)
+            elif (current_monitor_type == monitor_handler):
+                print_handler_read_and_innodb_log(host_key)
 
 
 print("<<<<<<<<<<<<<<<<<<监控结束>>>>>>>>>>>>>>>>>>")
