@@ -1,47 +1,147 @@
 # -*- coding: utf-8 -*-
 
-import os, time, paramiko
+import os, paramiko, argparse, sys, time
 
 #1.生成配置文件
+    #获取buffer pool的大小
+    #创建各种目录 - mkdir
 #2.从服务器获取安装包
+    #scp /opt/mysql.5.6.tar.gz root@192.168.11.129:/opt/
+    #mkdir /usr/local/mysql
+    #tar -zxvf /opt/mysql.5.6.tar.gz --strip-components=1 -C /usr/local/mysql
+#3.创建用户
+    #groupadd mysql
+    #useradd mysql -g mysql
+    #chmod -R mysql:mysql /mysql_data/
+    #chmod -R mysql:mysql /mysql_binlog/
 #3.自动初始化数据
+    #5.6和5.7的方式不一样
+    #5.6
+        #yum install -y perl-Module-Install.noarch
+        #/usr/local/mysql/script/mysql_install_db --defaults-file=/etc/my.cnf > /tmp/mysql_install.log
+    #5.7
+        #/usr/local/mysql/bin/mysqld --defaults-file=/etc/my.cnf --initialize-insecure > /tmp/mysql_install.log
 #4.自动启动
+    #/usr/local/mysql/bin/mysqld --defaults-file=/etc/my.cnf &
 
-def mysql_start(args):
-    os.system("mysqld --defaults-file = /etc/my.cnf &")
-    #要判断下数据库是否生成成功
-    time.sleep(2)
-    print("数据库启动成功!!!")
+#5.脚本示例
+#python mysql_auto_install.py --host=192.168.11.129 --version=5.6 --package=/opt/mysql-5.6.tar.gz
+#--host：需要安装的主机ip
+#--version：安装包的版本
+#--package：安装包路径
 
-def initialize_data(args):
-    print("开始初始化数据...")
-    os.system("mysqld --defaults-file = /etc/my.cnf &> /tmp/mysql.log")
-    print("初始化数据完成!!!")
-    time.sleep(1)
+error = "error"
+output = "output"
+data_dir = "/mysql_data"
+binlog_dir = "/mysql_binlog"
+base_dir = "/usr/local/mysql"
 
-def create_mysql_linux_user(args):
-    execute_remote_shell(args, "groupadd mysql")
-    execute_remote_shell(args, "useradd mysql -g mysql")
-    print("2-创建用户成功!!!\n")
+def check_arguments():
+    global data_dir, binlog_dir
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--host", type=str, dest="host", help="mysql host")
+    parser.add_argument("--port", type=str, dest="port", help="mysql port", default="3306")
+    parser.add_argument("--version", type=str, dest="version", help="mysql version", default="5.6")
+    parser.add_argument("--data-dir", type=str, dest="data_dir", help="mysql data dir", default=data_dir)
+    parser.add_argument("--binlog-dir", type=str, dest="binlog_dir", help="mysql bin log dir", default=binlog_dir)
+    parser.add_argument("--package", type=str, dest="package", help="mysql install package path")
+    args = parser.parse_args()
 
-def generate_mysql_config(args):
-    print("正在生成mysql配置文件...")
+    if not args.host or not args.version:
+        print("[error]:Please input remote host ip or hostname.")
+        sys.exit(1)
+    if(args.version != "5.6" and args.version != "5.7"):
+        print("[error]:Please input mysql package version number [--version=5.6 | --version=5.7].")
+        sys.exit(1)
+    if not args.package:
+        args.package = "/opt/mysql.tar.gz"
+    data_dir = args.data_dir
+    binlog_dir = args.binlog_dir
+    args.package_name = os.path.basename(args.package)
+    return args
 
-    #1.生成server_id = IP+端口号
-    result = execute_remote_shell(args, "ip addr | grep inet | grep -v 127.0.0.1 | grep -v inet6 | awk \'{ print $2}\' | awk -F \"/\" \'{print $1}\' | awk -F \".\" \'{print $4}\'")
-    print(result[0].replace("\n", ""))
-    port = 3306
-    server_id = "3306" + result[0].replace("\n", "")
+def mysql_install(args):
+    #创建ssh对象
+    host_client = paramiko.SSHClient()
+    host_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    host_client.connect(args.host, port=22, username="root")
 
-    #2.指定数据库目录和安装包地址
-    data_dir = "/data/mysql"
-    base_dir = "/opt/mysql"
+    #创建目录
+    print("\n--------------------------1.rm dir and create mysql data dir-------------------")
+    kill_mysql_process(host_client)
+    execute_remote_shell(host_client, "rm -rf {0}".format(base_dir))
+    execute_remote_shell(host_client, "rm -rf {0}".format(data_dir))
+    execute_remote_shell(host_client, "rm -rf {0}".format(binlog_dir))
+    execute_remote_shell(host_client, "mkdir {0}".format(base_dir))
+    execute_remote_shell(host_client, "mkdir {0}".format(data_dir))
+    execute_remote_shell(host_client, "mkdir {0}".format(binlog_dir))
 
-    #3.生成buffer pool并生成instance size
+    #生成配置文件并同步到远程机器
+    print("\n--------------------------2.geneate mysql config-------------------------------")
+    server_id = get_server_id(host_client, args)
+    buffer_pool_size , buffer_pool_instance = get_mysql_buffer_pool_size(host_client)
+    config_value = mysql_config.format(server_id, args.port, base_dir, data_dir, buffer_pool_size, buffer_pool_instance, binlog_dir)
+    write_mysql_conf_to_file(args, config_value)
+
+    #拷贝二进制包和解压
+    print("\n--------------------------3.copy mysql install package and unzip---------------")
+    os.system("scp {0} root@{1}:/opt/".format(args.package, args.host))
+    execute_remote_shell(host_client, "tar -zxvf /opt/{0} --strip-components=1 -C {1}".format(args.package_name, base_dir))
+
+    #创建用户和赋值权限
+    execute_remote_shell(host_client, "groupadd mysql")
+    execute_remote_shell(host_client, "useradd mysql -g mysql")
+    execute_remote_shell(host_client, "chown -R mysql:mysql {0}".format(data_dir))
+    execute_remote_shell(host_client, "chown -R mysql:mysql {0}".format(binlog_dir))
+
+    #初始化数据和启动mysql
+    print("\n--------------------------4.init mysql data------------------------------------")
+    if(args.version == "5.6"):
+        execute_remote_shell(host_client, "yum install -y perl-Module-Install.noarch")
+        execute_remote_shell(host_client, "{0}/scripts/mysql_install_db --defaults-file=/etc/my.cnf --basedir={1}".format(base_dir, base_dir))
+    else:
+        execute_remote_shell(host_client, "{0}/bin/mysqld --defaults-file=/etc/my.cnf --initialize-insecure".format(base_dir))
+
+    #要暂停一会，因为前面mysql初始化的时候进程还没有释放，就立刻启动会出现错误
+    if(check_mysqld_pid_is_exists(host_client)):
+        execute_remote_shell(host_client, "{0}/bin/mysqld --defaults-file=/etc/my.cnf".format(base_dir))
+    #通过mysqld_safe进行启动，不建议这样的方式
+    #execute_remote_shell(host_client, "cp {0}/support-files/mysql.server /etc/rc.d/init.d/mysqld".format(base_dir))
+    #execute_remote_shell(host_client, "service mysqld start")
+
+    host_client.close()
+    print("\n--------------------------5.mysql install complete ok.-------------------------")
+
+def kill_mysql_process(host_client):
+    result = execute_remote_shell(host_client, "ps -ef | grep mysql | awk \'{print $2}\'")
+    for pid in result[output]:
+        execute_remote_shell(host_client, "kill -6 {0}".format(pid.replace("\n", "")))
+
+def get_server_id(host_client, args):
+    result = execute_remote_shell(host_client, "ip addr | grep inet | grep -v 127.0.0.1 | grep -v inet6 "
+                                               "| awk \'{ print $2}\' | awk -F \"/\" \'{print $1}\' | awk -F \".\" \'{print $4}\'")
+    return args.port + result[output][0].replace("\n", "")
+
+def check_mysqld_pid_is_exists(host_client):
+    number = 1
+    while(number <= 10):
+        result = execute_remote_shell(host_client, "ps -ef | grep mysqld")
+        if(len(result[output]) <= 0):
+            return True
+        else:
+            if(result[output][0].find("defaults-file") < 0):
+                return True
+            else:
+                print("mysqld init pid is exists.")
+        time.sleep(0.5)
+        number = number + 1
+    return True
+
+def get_mysql_buffer_pool_size(host_client):
     buffer_pool_instance = 0
-    result = execute_remote_shell(args, "free -g | head -n2 | tail -n1 | awk \'{print $2}\'")
-    total_memory = int(result[0].replace("\n", ""))
-    buffer_pool_size = str(total_memory * 0.75) + "G"
+    result = execute_remote_shell(host_client, "free -g | head -n2 | tail -n1 | awk \'{print $2}\'")
+    total_memory = int(result[output][0].replace("\n", ""))
+    buffer_pool_size = str(int(round(total_memory * 0.75))) + "G"
     if(total_memory == 0):
         buffer_pool_size = "500M"
         buffer_pool_instance = 1
@@ -53,47 +153,34 @@ def generate_mysql_config(args):
         buffer_pool_instance = 4
     elif(total_memory > 16):
         buffer_pool_instance = 8
+    return (buffer_pool_size, buffer_pool_instance)
 
-    #4.判断是否把bin log放在单独的硬盘
-    bin_log = "mysql_bin"
-
-    #5.写入配置到本地，然后scp
+def write_mysql_conf_to_file(args, config_value):
     file_path = "/tmp/my.cnf"
     file = open(file_path, "w")
-    file.write(mysql_config.format(server_id, port, base_dir, data_dir, buffer_pool_size, buffer_pool_instance, bin_log))
+    file.write(config_value)
     file.close()
-    os.system("scp {0} root@{1}:/etc/".format(file_path, args.ip))
+    os.system("scp {0} root@{1}:/etc/".format(file_path, args.host))
 
-    time.sleep(0.5)
-    print("配置文件生成完成!!!\n")
-    time.sleep(0.5)
-
-def scp_install_package(args):
-    #shell = "scp root@{0}:{1} root@{2}:{3}"
-    print("1-正在拷贝mysql安装包...")
-    os.system("scp root@192.168.11.128:/opt/ root@192.168.11.129:/opt/")
-
-    time.sleep(0.5)
-    print("1-拷贝完成!!!\n")
-    time.sleep(0.5)
-
-def execute_remote_shell(args, shell):
+def execute_remote_shell(host_client, shell):
+    result = {}
     try:
-        host_client = paramiko.SSHClient()
-        host_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        host_client.connect(args.ip, port=22, username="root")
+        print(shell)
         stdin, stdout, stderr = host_client.exec_command(shell)
-        return stdout.readlines()
-    finally:
-        if (host_client != None):
-            host_client.close()
+        result[error] = stderr.readlines()
+        result[output] = stdout.readlines()
+        if(len(result[error]) > 0):
+            print(result[error][0].replace("\n", ""))
+    except:
+        host_client.close()
+    return result
 
 mysql_config = ("""
 [client]
 default_character_set = utf8mb4
 
 [mysql]
-prompt = \\u@\\h(\\d) \\r:\\m:\\s>
+prompt = "\\u@\\h(\\d) \\\\r:\\\\m:\\\\s>"
 default_character_set = utf8mb4
 
 [mysqld]
@@ -120,8 +207,8 @@ transaction_isolation = REPEATABLE-READ
 innodb_log_buffer_size = 16M
 innodb_log_file_size = 256M
 innodb_data_file_path = ibdata1:1G:autoextend
-innodb_log_group_home_dir = ./
-innodb_log_files_in_group = 2
+#innodb_log_group_home_dir = ./
+#innodb_log_files_in_group = 2
 #innodb_force_recovery = 1
 #read_only = 1
 innodb_sort_buffer_size=2M
@@ -142,8 +229,8 @@ innodb_print_all_deadlocks = 1
 innodb_open_files = 6000
 
 #replication
-log_bin = {6}
-log_bin_index = mysql_bin_index
+log_bin = {6}/bin_log
+log_bin_index = {6}/bin_log_index
 binlog_format = ROW
 binlog_cache_size = 2M
 max_binlog_cache_size = 50M
@@ -152,8 +239,8 @@ expire_logs_days = 7
 sync_binlog = 0
 skip_slave_start = 1
 binlog_rows_query_log_events = 1
-relay_log = relay_log
-relay_log_index = relay_log_index
+relay_log = {6}/relay_log
+relay_log_index = {6}/relay_log_index
 max_relay_log_size = 1G
 #relay_log_purge = 0
 master_info_repository = TABLE
@@ -192,10 +279,10 @@ lower_case_table_names = 0
 query_cache_size = 0
 query_cache_type = 0
 max_allowed_packet = 1G
-time_zone = SYSTEM
+#time_zone = SYSTEM
 lock_wait_timeout = 30
 performance_schema = OFF
-table_open_cache_instances = 8
+table_open_cache_instances = 2
 metadata_locks_hash_instances = 8
 table_open_cache = 4096
 table_definition_cache = 2048
@@ -206,9 +293,4 @@ interactive_timeout = 300
 connect_timeout = 20
 """)
 
-class Data():
-    pass
-
-args = Data()
-args.ip = "192.168.11.129"
-generate_mysql_config(args)
+mysql_install(check_arguments())

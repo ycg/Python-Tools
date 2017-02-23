@@ -536,7 +536,7 @@ class ThreadLinuxHostStatus(threading.Thread):
             #for key, host_info in host_infos.items():
                #monitor_host_status(host_info)
             join_thread_pool(monitor_host_status)
-            time.sleep(time_interval)
+            time.sleep(time_interval * 3)
 
 '''监控Innodb状态的线程类
 class ThreadInnodbStatus(threading.Thread):
@@ -856,7 +856,7 @@ time.sleep(1)
 ThreadMySQLStatus().start()
 ThreadMonitorInput().start()
 #ThreadInnodbStatus().start()
-#ThreadLinuxHostStatus().start()
+ThreadLinuxHostStatus().start()
 #ThreadMySQLReplication().start()
 
 id = 0;
