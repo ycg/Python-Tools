@@ -29,6 +29,11 @@ import os, paramiko, argparse, sys, time
 #--host：需要安装的主机ip
 #--version：安装包的版本
 #--package：安装包路径
+#--data-dir：指定数据存储目录
+#--binlog-dir：指定binlog存储目录
+
+#6.安装依赖包
+#pip install paramiko
 
 error = "error"
 output = "output"
@@ -37,12 +42,13 @@ binlog_dir = "/mysql_binlog"
 base_dir = "/usr/local/mysql"
 
 def check_arguments():
-    global data_dir, binlog_dir
+    global data_dir, base_dir, binlog_dir
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, dest="host", help="mysql host")
     parser.add_argument("--port", type=str, dest="port", help="mysql port", default="3306")
     parser.add_argument("--version", type=str, dest="version", help="mysql version", default="5.6")
     parser.add_argument("--data-dir", type=str, dest="data_dir", help="mysql data dir", default=data_dir)
+    parser.add_argument("--base-dir", type=str, dest="base_dir", help="mysql base dir", default=base_dir)
     parser.add_argument("--binlog-dir", type=str, dest="binlog_dir", help="mysql bin log dir", default=binlog_dir)
     parser.add_argument("--package", type=str, dest="package", help="mysql install package path")
     args = parser.parse_args()
@@ -56,6 +62,7 @@ def check_arguments():
     if not args.package:
         args.package = "/opt/mysql.tar.gz"
     data_dir = args.data_dir
+    base_dir = args.base_dir
     binlog_dir = args.binlog_dir
     args.package_name = os.path.basename(args.package)
     return args
@@ -113,9 +120,15 @@ def mysql_install(args):
     print("\n--------------------------5.mysql install complete ok.-------------------------")
 
 def kill_mysql_process(host_client):
+    #改进kill掉mysql的逻辑
+    result = execute_remote_shell(host_client, "cat {0}/mysql.pid".format(data_dir))
+    if(len(result[error]) <= 0):
+        mysql_pid = result[output][0].replace("\n", "")
+        execute_remote_shell(host_client, "kill -6 " + mysql_pid)
+    '''
     result = execute_remote_shell(host_client, "ps -ef | grep mysql | awk \'{print $2}\'")
     for pid in result[output]:
-        execute_remote_shell(host_client, "kill -6 {0}".format(pid.replace("\n", "")))
+        execute_remote_shell(host_client, "kill -6 {0}".format(pid.replace("\n", "")))'''
 
 def get_server_id(host_client, args):
     result = execute_remote_shell(host_client, "ip addr | grep inet | grep -v 127.0.0.1 | grep -v inet6 "
