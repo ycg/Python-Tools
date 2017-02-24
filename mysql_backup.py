@@ -29,3 +29,7 @@ mysqldump = "mysqldump -h{0} -u{1} -p{2} -P{3} " \
 
 
 #xtrabackup
+
+
+#1.检查是全备还是增量备份
+#2.增量只支持xtrabackup，通过配置文件

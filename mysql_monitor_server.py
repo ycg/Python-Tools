@@ -24,5 +24,14 @@ where table_schema != 'mysql' and table_schema != 'information_schema' and table
 and index_length > 1024 * 1024 * 100 order by index_length desc limit 100;
 
 1.每次获取status之后就通过线程把数据写入到数据库
+
+二丶各种邮件报表
+    1.数据的增长量
+        比如表体积前20的表数据
+        比如一天表数据增长的前20个表
+    2.数据库总的报表
+        磁盘占用，mysql数据总大小
+    3.统计磁盘碎片
+        数据库查询数据大小+索引大小 - 跟硬盘文件大小做对比
 '''
 

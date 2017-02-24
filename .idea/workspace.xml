@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36d30bf7-a171-4e40-8111-c0429f59fde9" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/mysql_auto_create_slave.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Binlog/MyFile.py" afterPath="$PROJECT_DIR$/Binlog/MyFile.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysql_auto_install.py" afterPath="$PROJECT_DIR$/mysql_auto_install.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysql_monitor.py" afterPath="$PROJECT_DIR$/mysql_monitor.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysql_backup.py" afterPath="$PROJECT_DIR$/mysql_backup.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysql_monitor_server.py" afterPath="$PROJECT_DIR$/mysql_monitor_server.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -45,108 +46,49 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="mysql_auto_install.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mysql_auto_install.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mysql_auto_install.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3883495">
-              <caret line="109" column="62" selection-start-line="109" selection-start-column="62" selection-end-line="109" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding>
-                <element signature="e#1123#2314#0" expanded="false" />
-                <element signature="e#5212#5416#0" expanded="false" />
-                <element signature="e#5460#5752#0" expanded="false" />
-                <element signature="e#5803#6216#0" expanded="false" />
-                <element signature="e#6267#6976#0" expanded="false" />
-                <element signature="e#7032#7204#0" expanded="false" />
-                <element signature="e#7256#7596#0" expanded="false" />
+                <element signature="e#1203#2539#0" expanded="false" />
+                <element signature="e#5437#5913#0" expanded="false" />
+                <element signature="e#5957#6249#0" expanded="false" />
+                <element signature="e#6300#6713#0" expanded="false" />
+                <element signature="e#6764#7473#0" expanded="false" />
+                <element signature="e#7529#7701#0" expanded="false" />
+                <element signature="e#7753#8093#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyFile.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Binlog/MyFile.py">
+      <file leaf-file-name="mysql_backup.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mysql_backup.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-              <folding>
-                <element signature="e#1#15#0" expanded="true" />
-                <marker date="1487838272048" expanded="true" signature="253:268" placeholder="select sleep..." />
-                <marker date="1487838272048" expanded="true" signature="863:932" placeholder="select count..." />
-                <marker date="1487838272048" expanded="true" signature="933:999" placeholder="select count..." />
-              </folding>
+              <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="binlog_util.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/binlog_util.py">
+      <file leaf-file-name="mysql_auto_create_slave.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mysql_auto_create_slave.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="81" column="19" selection-start-line="81" selection-start-column="19" selection-end-line="81" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-                <marker date="1487069973369" expanded="true" signature="1973:2015" placeholder="INSERT INTO ..." />
-                <marker date="1487069973369" expanded="true" signature="2085:2118" placeholder="DELETE FROM ..." />
-              </folding>
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mysql_monitor.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mysql_monitor.py">
+      <file leaf-file-name="mysql_monitor_server.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/mysql_monitor_server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="754" column="17" selection-start-line="754" selection-start-column="17" selection-end-line="754" selection-end-column="17" />
-              <folding>
-                <element signature="e#25#39#0" expanded="true" />
-                <element signature="e#1442#1446#0" expanded="false" />
-                <element signature="e#1479#1665#0" expanded="false" />
-                <element signature="e#1541#1665#0" expanded="false" />
-                <element signature="e#1705#1737#0" expanded="false" />
-                <element signature="e#1733#1737#0" expanded="false" />
-                <element signature="e#1782#1830#0" expanded="false" />
-                <element signature="e#1810#1821#0" expanded="false" />
-                <element signature="e#1876#1880#0" expanded="false" />
-                <element signature="e#1929#3681#0" expanded="false" />
-                <element signature="e#3743#4319#0" expanded="false" />
-                <element signature="e#4518#5369#1" expanded="false" />
-                <element signature="e#7139#7987#0" expanded="false" />
-                <element signature="e#8045#9043#0" expanded="false" />
-                <element signature="e#9103#10116#0" expanded="false" />
-                <element signature="e#10201#11000#0" expanded="false" />
-                <element signature="e#11035#11084#0" expanded="false" />
-                <element signature="e#19324#19693#1" expanded="false" />
-                <element signature="e#19754#20186#0" expanded="false" />
-                <element signature="e#20188#20492#1" expanded="false" />
-                <element signature="e#20565#20909#0" expanded="false" />
-                <element signature="e#20965#21074#0" expanded="false" />
-                <element signature="e#21131#21557#0" expanded="false" />
-                <element signature="e#22020#22236#0" expanded="false" />
-                <element signature="e#22048#22108#0" expanded="false" />
-                <element signature="e#22137#22236#0" expanded="false" />
-                <element signature="e#22238#22630#1" expanded="false" />
-                <element signature="e#23027#23421#1" expanded="false" />
-                <element signature="e#23493#25369#0" expanded="false" />
-                <element signature="e#23551#23611#0" expanded="false" />
-                <element signature="e#23640#24731#0" expanded="false" />
-                <element signature="e#24784#25030#0" expanded="false" />
-                <element signature="e#25084#25369#0" expanded="false" />
-                <element signature="e#25427#25734#0" expanded="false" />
-                <element signature="e#25785#26619#0" expanded="false" />
-                <element signature="e#26675#27028#0" expanded="false" />
-                <element signature="e#27077#27475#0" expanded="false" />
-                <element signature="e#27537#27850#0" expanded="false" />
-                <element signature="e#27905#28525#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="threading.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python27/Lib/threading.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="716" column="8" selection-start-line="716" selection-start-column="8" selection-end-line="716" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.7119741">
+              <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -201,8 +143,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/binlog_util.py" />
-        <option value="$PROJECT_DIR$/装饰器.py" />
         <option value="$PROJECT_DIR$/CheckHostList.py" />
         <option value="$USER_HOME$/AppData/Local/Temp/HZ$D.176.1826/func.py" />
         <option value="$USER_HOME$/AppData/Local/Temp/HZ$D.176.1825/binlog.py" />
@@ -248,10 +188,12 @@
         <option value="$PROJECT_DIR$/hc_sell_delegate_group2_to_datacenter.py" />
         <option value="$PROJECT_DIR$/MySQLTools/mysql_monitor.py" />
         <option value="$PROJECT_DIR$/mysql_monitor_client.py" />
-        <option value="$PROJECT_DIR$/mysql_monitor_server.py" />
         <option value="$PROJECT_DIR$/mysql_monitor.py" />
         <option value="$PROJECT_DIR$/Binlog/MyFile.py" />
+        <option value="$PROJECT_DIR$/mysql_backup.py" />
         <option value="$PROJECT_DIR$/mysql_auto_install.py" />
+        <option value="$PROJECT_DIR$/mysql_monitor_server.py" />
+        <option value="$PROJECT_DIR$/mysql_auto_create_slave.py" />
       </list>
     </option>
   </component>
@@ -798,7 +740,19 @@
       <option name="project" value="LOCAL" />
       <updated>1487590177380</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="完成自动安装mysql的脚本">
+      <created>1487838889152</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1487838889152</updated>
+    </task>
+    <task id="LOCAL-00018" summary="修改安装之前检查安装目录mysql有没有进程&#10;以后还要优化配置文件">
+      <created>1487905254562</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1487905254562</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView">
@@ -811,19 +765,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1874" height="1096" extended-state="0" />
+    <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15325248" sideWeight="0.49380532" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284974" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953367" sideWeight="0.5033076" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953367" sideWeight="0.50551265" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296582" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32746115" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32953367" sideWeight="0.4966924" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32953367" sideWeight="0.49448732" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4103627" sideWeight="0.49779493" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1879085" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15325248" sideWeight="0.49380532" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296582" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1879085" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19018742" sideWeight="0.5061947" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3991881" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -835,7 +790,6 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="MaxCompute Project Explorer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="MaxCompute Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953367" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -870,7 +824,9 @@
     <MESSAGE value="优化和改进" />
     <MESSAGE value="继续优化mysql监控，进行分拆处理，服务端和客户端&#10;以及发送邮件功能" />
     <MESSAGE value="添加自动安装mysql脚本&#10;增减监控项" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加自动安装mysql脚本&#10;增减监控项" />
+    <MESSAGE value="完成自动安装mysql的脚本" />
+    <MESSAGE value="修改安装之前检查安装目录mysql有没有进程&#10;以后还要优化配置文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改安装之前检查安装目录mysql有没有进程&#10;以后还要优化配置文件" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -886,73 +842,11 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Python27/Lib/threading.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="716" column="8" selection-start-line="716" selection-start-column="8" selection-end-line="716" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysql_monitor_server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysql_monitor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="294" column="0" selection-start-line="294" selection-start-column="0" selection-end-line="294" selection-end-column="0" />
-          <folding>
-            <element signature="e#25#39#0" expanded="true" />
-            <element signature="e#1442#1446#0" expanded="false" />
-            <element signature="e#1479#1665#0" expanded="false" />
-            <element signature="e#1541#1665#0" expanded="false" />
-            <element signature="e#1705#1737#0" expanded="false" />
-            <element signature="e#1733#1737#0" expanded="false" />
-            <element signature="e#1782#1830#0" expanded="false" />
-            <element signature="e#1810#1821#0" expanded="false" />
-            <element signature="e#1876#1880#0" expanded="false" />
-            <element signature="e#1929#3681#0" expanded="false" />
-            <element signature="e#3743#4319#0" expanded="false" />
-            <element signature="e#4518#5369#1" expanded="false" />
-            <element signature="e#7139#7987#0" expanded="false" />
-            <element signature="e#8045#9043#0" expanded="false" />
-            <element signature="e#9103#10116#0" expanded="false" />
-            <element signature="e#10201#11000#0" expanded="false" />
-            <element signature="e#11035#11084#0" expanded="false" />
-            <element signature="e#19324#19693#1" expanded="false" />
-            <element signature="e#19754#20186#0" expanded="false" />
-            <element signature="e#20188#20492#1" expanded="false" />
-            <element signature="e#20565#20909#0" expanded="false" />
-            <element signature="e#20965#21074#0" expanded="false" />
-            <element signature="e#21131#21557#0" expanded="false" />
-            <element signature="e#22020#22236#0" expanded="false" />
-            <element signature="e#22048#22108#0" expanded="false" />
-            <element signature="e#22137#22236#0" expanded="false" />
-            <element signature="e#22238#22630#1" expanded="false" />
-            <element signature="e#23027#23421#1" expanded="false" />
-            <element signature="e#23493#25369#0" expanded="false" />
-            <element signature="e#23551#23611#0" expanded="false" />
-            <element signature="e#23640#24731#0" expanded="false" />
-            <element signature="e#24784#25030#0" expanded="false" />
-            <element signature="e#25084#25369#0" expanded="false" />
-            <element signature="e#25427#25734#0" expanded="false" />
-            <element signature="e#25785#26619#0" expanded="false" />
-            <element signature="e#26675#27028#0" expanded="false" />
-            <element signature="e#27077#27475#0" expanded="false" />
-            <element signature="e#27537#27850#0" expanded="false" />
-            <element signature="e#27905#28525#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mysql_backup.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1153,13 +1047,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MySQLOperation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Binlog/hc_sell_delegate_group2_to_datacenter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.21367522">
@@ -1181,24 +1068,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MySQLHelper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23076923">
-          <caret line="22" column="32" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Desktop/iwjw/Lepus_v3.8_beta/python/check_mysql.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5584989">
           <caret line="345" column="23" selection-start-line="343" selection-start-column="9" selection-end-line="345" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MySQLUtil.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="36" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -1237,20 +1110,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mysql_monitor_server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysql_backup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/threading.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1265,31 +1124,17 @@
           <caret line="81" column="19" selection-start-line="81" selection-start-column="19" selection-end-line="81" selection-end-column="19" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1487069973369" expanded="true" signature="1973:2015" placeholder="INSERT INTO ..." />
-            <marker date="1487069973369" expanded="true" signature="2085:2118" placeholder="DELETE FROM ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Binlog/MyFile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-          <folding>
-            <element signature="e#1#15#0" expanded="true" />
-            <marker date="1487838272048" expanded="true" signature="253:268" placeholder="select sleep..." />
-            <marker date="1487838272048" expanded="true" signature="863:932" placeholder="select count..." />
-            <marker date="1487838272048" expanded="true" signature="933:999" placeholder="select count..." />
+            <marker date="1487069973369" expanded="true" signature="-1:-1" placeholder="INSERT INTO ..." />
+            <marker date="1487069973369" expanded="true" signature="-1:-1" placeholder="DELETE FROM ..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mysql_monitor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="754" column="17" selection-start-line="754" selection-start-column="17" selection-end-line="754" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.55448717">
+          <caret line="858" column="21" selection-start-line="858" selection-start-column="0" selection-end-line="858" selection-end-column="21" />
           <folding>
-            <element signature="e#25#39#0" expanded="true" />
             <element signature="e#1442#1446#0" expanded="false" />
             <element signature="e#1479#1665#0" expanded="false" />
             <element signature="e#1541#1665#0" expanded="false" />
@@ -1301,21 +1146,28 @@
             <element signature="e#1929#3681#0" expanded="false" />
             <element signature="e#3743#4319#0" expanded="false" />
             <element signature="e#4518#5369#1" expanded="false" />
+            <element signature="e#5786#6801#0" expanded="false" />
+            <element signature="e#6858#7082#0" expanded="false" />
             <element signature="e#7139#7987#0" expanded="false" />
             <element signature="e#8045#9043#0" expanded="false" />
             <element signature="e#9103#10116#0" expanded="false" />
             <element signature="e#10201#11000#0" expanded="false" />
             <element signature="e#11035#11084#0" expanded="false" />
+            <element signature="e#11665#18983#1" expanded="false" />
             <element signature="e#19324#19693#1" expanded="false" />
             <element signature="e#19754#20186#0" expanded="false" />
             <element signature="e#20188#20492#1" expanded="false" />
             <element signature="e#20565#20909#0" expanded="false" />
             <element signature="e#20965#21074#0" expanded="false" />
             <element signature="e#21131#21557#0" expanded="false" />
+            <element signature="e#21613#21951#0" expanded="false" />
             <element signature="e#22020#22236#0" expanded="false" />
             <element signature="e#22048#22108#0" expanded="false" />
             <element signature="e#22137#22236#0" expanded="false" />
             <element signature="e#22238#22630#1" expanded="false" />
+            <element signature="e#22701#23025#0" expanded="false" />
+            <element signature="e#22729#22789#0" expanded="false" />
+            <element signature="e#22818#23025#0" expanded="false" />
             <element signature="e#23027#23421#1" expanded="false" />
             <element signature="e#23493#25369#0" expanded="false" />
             <element signature="e#23551#23611#0" expanded="false" />
@@ -1328,23 +1180,121 @@
             <element signature="e#27077#27475#0" expanded="false" />
             <element signature="e#27537#27850#0" expanded="false" />
             <element signature="e#27905#28525#0" expanded="false" />
+            <element signature="e#28584#28891#0" expanded="false" />
+            <element signature="e#28942#29949#0" expanded="false" />
+            <element signature="e#30532#30901#0" expanded="false" />
+            <element signature="e#30968#31701#0" expanded="false" />
+            <element signature="e#31769#32008#0" expanded="false" />
+            <element signature="e#32048#39899#0" expanded="false" />
+            <element signature="e#39939#40227#0" expanded="false" />
+            <element signature="e#40263#40422#0" expanded="false" />
+            <element signature="e#40461#40623#0" expanded="false" />
+            <element signature="e#40656#40704#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MySQLOperation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.05982906">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="select 1 fro..replication_infos..." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="insert into ..." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="select 1 fro..mysql_status_infos..." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="insert into ..." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="select 1 fro..mysql_status_infos..." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="insert into ..." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="select 1 fro..linux_host_infos..." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="insert into ..." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="select 1 fro..mysql_monitor...." />
+            <marker date="1484543591846" expanded="true" signature="-1:-1" placeholder="insert into ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MySQLHelper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5940171">
+          <caret line="39" column="19" selection-start-line="39" selection-start-column="19" selection-end-line="39" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MySQLUtil.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4871795">
+          <caret line="37" column="22" selection-start-line="37" selection-start-column="22" selection-end-line="37" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Binlog/MyFile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20940171">
+          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+          <folding>
+            <element signature="e#1#15#0" expanded="true" />
+            <marker date="1487838272048" expanded="true" signature="-1:-1" placeholder="select sleep..." />
+            <marker date="1487838272048" expanded="true" signature="-1:-1" placeholder="select count..." />
+            <marker date="1487838272048" expanded="true" signature="-1:-1" placeholder="select count..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm40/system/python_stubs/-762174762/datetime.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/python-skeletons/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="6.551282">
+          <caret line="1466" column="8" selection-start-line="1466" selection-start-column="8" selection-end-line="1466" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysql_backup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mysql_auto_install.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3883495">
-          <caret line="109" column="62" selection-start-line="109" selection-start-column="62" selection-end-line="109" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding>
-            <element signature="e#1123#2314#0" expanded="false" />
-            <element signature="e#5212#5416#0" expanded="false" />
-            <element signature="e#5460#5752#0" expanded="false" />
-            <element signature="e#5803#6216#0" expanded="false" />
-            <element signature="e#6267#6976#0" expanded="false" />
-            <element signature="e#7032#7204#0" expanded="false" />
-            <element signature="e#7256#7596#0" expanded="false" />
+            <element signature="e#1203#2539#0" expanded="false" />
+            <element signature="e#5437#5913#0" expanded="false" />
+            <element signature="e#5957#6249#0" expanded="false" />
+            <element signature="e#6300#6713#0" expanded="false" />
+            <element signature="e#6764#7473#0" expanded="false" />
+            <element signature="e#7529#7701#0" expanded="false" />
+            <element signature="e#7753#8093#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysql_auto_create_slave.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysql_monitor_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7119741">
+          <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>
