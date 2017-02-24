@@ -2,6 +2,8 @@
 
 import os, paramiko, argparse, sys, time
 
+#首先安装依赖包 - pip install paramiko
+
 #1.生成配置文件
     #获取buffer pool的大小
     #创建各种目录 - mkdir
@@ -31,9 +33,6 @@ import os, paramiko, argparse, sys, time
 #--package：安装包路径
 #--data-dir：指定数据存储目录
 #--binlog-dir：指定binlog存储目录
-
-#6.安装依赖包
-#pip install paramiko
 
 error = "error"
 output = "output"
@@ -260,6 +259,9 @@ master_info_repository = TABLE
 relay_log_info_repository = TABLE
 relay_log_recovery = ON
 log_slave_updates = 1
+#gtid
+#gtid_mode = ON
+#enforce_gtid_consistency = ON
 
 #slow_log
 slow_query_log = 1
@@ -297,7 +299,7 @@ lock_wait_timeout = 30
 performance_schema = OFF
 table_open_cache_instances = 2
 metadata_locks_hash_instances = 8
-table_open_cache = 4096
+table_open_cache = 4000
 table_definition_cache = 2048
 
 #timeout
